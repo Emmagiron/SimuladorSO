@@ -1,0 +1,68 @@
+SimuladorMemoriaProcesos2025/
+├── README.md
+├── howto.txt
+├── main.py
+├── config/
+│   └── parametros.py
+├── procesos/
+│   ├── gestor_procesos.py
+│   └── archivo_procesos.csv
+├── memoria/
+│   ├── particiones.py
+│   └── tabla_memoria.py
+├── planificador/
+│   └── srtf.py
+├── salida/
+│   ├── estadisticas.py
+│   └── presentacion.py
+├── utils/
+│   └── helpers.py
+└── trello/
+    └── tablero_trello.txt
+
+Porque lo hicimos asi?
+Modularidad y Función de Cada Módulo
+main.py
+Punto de entrada del simulador.
+
+Coordina la carga de procesos, asignación de memoria, planificación y presentación de resultados.
+
+config/parametros.py
+Define constantes como tamaño de particiones, grado de multiprogramación, etc.
+
+procesos/gestor_procesos.py
+Carga procesos desde archivo.
+
+Maneja estados: Nuevo, Listo, Listo Suspendido, Ejecución, Terminado.
+
+procesos/archivo_procesos.csv
+Archivo con los procesos: id,tamaño,arribo,irrupción.
+
+memoria/particiones.py
+Define las particiones fijas y su estructura.
+
+memoria/tabla_memoria.py
+Aplica Best-Fit.
+
+Calcula fragmentación interna.
+
+Actualiza tabla de memoria.
+
+planificador/srtf.py
+Implementa el algoritmo SRTF.
+
+Selecciona el proceso más corto restante.
+
+salida/estadisticas.py
+Calcula tiempo de retorno, espera, promedios y rendimiento.
+
+salida/presentacion.py
+Muestra el estado del procesador, tabla de memoria, colas de procesos.
+
+Genera salidas en cada evento relevante.
+
+utils/helpers.py
+Funciones auxiliares: ordenamiento, formateo, logs, etc.
+
+trello/tablero_trello.txt
+Link o instrucciones para acceder al tablero Trello del equipo.

@@ -1,0 +1,3 @@
+Guía paso a paso para ejecutar el simulador.
+
+Ejemplo de entrada y salida esperada.
