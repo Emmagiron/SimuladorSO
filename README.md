@@ -9,7 +9,7 @@ Planificación de CPU: Algoritmo SRTF (Shortest Remaining Time First).
 
 Gestión de estados: Nuevo, Listo, Listo Suspendido, Ejecución y Terminado.
 
-El simulador permite cargar hasta 10 procesos desde archivo, mostrar el estado del procesador, la tabla de memoria, las colas de procesos y generar estadísticas finales como tiempos de espera, retorno y rendimiento del sistema.
+El simulador permite cargar hasta 10 procesos desde archivo, mostrar el estado del procesador, la tabla de memoria, las colas de procesos y generar estadísticas finales como tiempos de espera, retorno y rendimiento del sistema..
 
 Está implementado en Python con estructura modular, pensado para facilitar el análisis, la presentación didáctica y el trabajo colaborativo en equipos.
 -------------------------------------------------------------------------------------------
