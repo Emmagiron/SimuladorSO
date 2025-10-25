@@ -7,6 +7,7 @@ from planificador.srtf import seleccionar_siguiente, avanzar_tiempo
 from salida.estadisticas import calcular_estadisticas
 from salida.presentacion import mostrar_estado
 from config.parametros import RUTA_PROCESOS, GRADO_MULTIPROGRAMACION
+from config import swap  # si swap.py está dentro de /config
 
 class SimuladorPasoAPaso:
     def __init__(self):
@@ -40,13 +41,16 @@ class SimuladorPasoAPaso:
                     p["estado"] = "Listo Suspendido"
                     log_tick += f"⏳ Proceso {p['id']} llegó pero se alcanzó el grado de multiprogramación.\n"
 
-        # 🔄 Intentar reactivar suspendidos
+        # 🔄 Reactivar suspendidos si hay espacio
         for p in self.procesos:
             if p["estado"] == "Listo Suspendido":
                 if self.contar_en_memoria() < GRADO_MULTIPROGRAMACION:
                     if best_fit(self.particiones, p["id"], p["tamano"]):
                         p["estado"] = "Listo"
                         log_tick += f"🔄 Proceso {p['id']} reactivado desde suspendido y asignado a memoria.\n"
+
+        # 🔁 Intentar swap si hay procesos suspendidos y espacio
+        swap.gestionar_swap()
 
         # ⚙️ Selección de proceso a ejecutar
         siguiente = seleccionar_siguiente(self.procesos, self.tiempo)
@@ -57,13 +61,11 @@ class SimuladorPasoAPaso:
                 log_tick += f"⚙️ Ejecutando proceso {self.procesador['id']}\n"
             else:
                 log_tick += f"🔁 Continuando ejecución de proceso {self.procesador['id']}\n"
-
-        # 📋 Estado del sistema
-        log_tick += mostrar_estado(self.tiempo, self.procesador, self.procesos)
-        log_tick += mostrar_tabla(self.particiones)
+        else:
+            log_tick += "⏸️ Procesador libre y sin procesos listos.\n"
 
         # ⏳ Avanzar tiempo de ejecución
-        if self.procesador is not None:
+        if self.procesador:
             self.procesador = avanzar_tiempo(self.procesador, self.procesos, self.tiempo)
             if self.procesador and self.procesador["restante"] == 0:
                 log_tick += f"✅ Proceso {self.procesador['id']} terminado. Liberando memoria...\n"
@@ -79,8 +81,10 @@ class SimuladorPasoAPaso:
                             if best_fit(self.particiones, p["id"], p["tamano"]):
                                 p["estado"] = "Listo"
                                 log_tick += f"🔄 Proceso {p['id']} reactivado desde suspendido y asignado a memoria.\n"
-        else:
-            log_tick += "⏸️ Procesador libre y sin procesos listos.\n"
+
+        # 📋 Estado del sistema
+        log_tick += mostrar_estado(self.tiempo, self.procesador, self.procesos)
+        log_tick += mostrar_tabla(self.particiones)
 
         # 🛑 Verificar fin de simulación
         if self.procesador is None and not any(p["estado"] == "Listo" for p in self.procesos):
